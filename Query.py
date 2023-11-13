@@ -5,7 +5,8 @@ class ConditionalOperators:
     Equal = "="
     GreaterThan = ">"
     LessThan = "<"
-
+    Null = "IS NULL"
+    NotNull = "IS NOT NULL"
 
 class LogicalOperators:
     def __init__(self) -> None:
@@ -24,6 +25,50 @@ class JoinOperators:
     Left = "LEFT OUTER JOIN"
     Right = "RIGHT OUTER JOIN"
 
+class Orders:
+    def __init__(self) -> None:
+        pass
+
+    Descending = "DESC"
+    Ascending = "ASC"
+
+class AggregateFunctions:
+    def __init__(self) -> None:
+        pass
+
+    def Sum(attribute):
+        return "SUM(" + str(attribute) + ")"
+
+    def Count(attribute):
+        return "COUNT(" + str(attribute) + ")"
+
+
+class ConditionSet:
+    def __init__(self, operator: str) -> None:
+        self.operator = operator
+        self.conditions = []
+
+    def addCondition(self, attribute: str, operator: str, value: object = None, tableName: str = None):
+        if tableName is not None:
+            self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value), "tableName": tableName})
+        elif value is not None:
+            self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value)})
+        else:
+            self.conditions.append({"attribute": attribute, "operator": operator})
+
+    def getCondition(self):
+        condtionSTR = "("
+        condCount = len(self.conditions)
+        for condition in self.conditions:
+            condCount = condCount - 1
+            condtionSTR += condition["attribute"] + " " + condition["operator"]
+            if "value" in condition.keys():
+                condtionSTR += " " + condition["value"]    
+            if condCount > 0: condtionSTR += " " + self.operator + " "
+        condtionSTR += ")"
+        return condtionSTR
+
+
 class Query:
     
     def __init__(self, tableName):
@@ -32,11 +77,12 @@ class Query:
         self.joinedTables = []
         self.attributes = []
         self.orders = []
-        self.groupBy = []
+        self.groups = []
+        self.orderDirection = ""
 
     def addAttribute(self, attribute: str, tableName: str = None):
         self.attributes.append({"attribute": attribute, "table": tableName})
-        
+
 
     def addCondition(self, attribute: str, operator: str, value: object, tableName: str = None):
         if tableName is not None:
@@ -52,12 +98,12 @@ class Query:
 
     def addGroup(self, attribute: str, table: str = None):
         if table is not None:
-            self.groupBy.append(table + "." + attribute)
+            self.groups.append(table + "." + attribute)
         else:
-            self.groupBy.append(attribute)
+            self.groups.append(attribute)
 
     def addOrder(self, attribute: str, direction: str):
-        self.orders.append({"attribute": attribute, "direction": direction})
+        self.orders.append(attribute + " " + direction)
 
     def getQuery(self):
         query = "SELECT "
@@ -83,20 +129,26 @@ class Query:
         if len(self.conditions) > 0:
             query += " WHERE "
             for condition in self.conditions:
-                if condition["tableName"] is not None:
+                if "tableName" in condition.keys():
                     query += condition["tableName"] + "." + condition["attribute"] + " " + condition["operator"] + " " + condition["value"]
                 else:
                     query += condition["attribute"] + " " + condition["operator"] + " " + condition["value"]
 
-        if len(self.groupBy) > 0:
+        if len(self.groups) > 0:
+            gpCount = len(self.groups)
             query += " GROUP BY "
-            for group in self.groupBy:
+            for group in self.groups:
+                gpCount = gpCount - 1
                 query += group
+                if gpCount > 0: query += ", "
 
         if len(self.orders) > 0:
+            ordCount = len(self.orders)
             query += " ORDER BY "
             for order in self.orders:
+                ordCount = ordCount - 1
                 query += order
+                if ordCount > 0: query += ", "
         
         query += ";"
 
