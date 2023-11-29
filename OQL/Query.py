@@ -24,7 +24,7 @@ class JoinOperators:
     def __init__(self) -> None:
         pass
 
-    Inner = "INNER JOIN"
+    INNER = "INNER JOIN"
     Left = "LEFT OUTER JOIN"
     Right = "RIGHT OUTER JOIN"
 
@@ -189,7 +189,6 @@ class Query:
                 ordCount = ordCount - 1
                 query += order
                 if ordCount > 0: query += ", "
-        
-        query += ";"
+
 
         return query
