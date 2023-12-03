@@ -4,7 +4,7 @@ def TestNewSelectAll():
     q = Query("contact")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact;"
+    exQuery = "SELECT * FROM contact"
     assert query == exQuery
 
 def TestSelectAttributes():
@@ -13,7 +13,7 @@ def TestSelectAttributes():
     q.Select("lastName")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT firstName, lastName FROM contact;"
+    exQuery = "SELECT firstName, lastName FROM contact"
     assert query == exQuery
 
 def TestSelectAttributesWithTableName():
@@ -22,23 +22,23 @@ def TestSelectAttributesWithTableName():
     q.Select("lastName", "contact")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT contact.firstName, contact.lastName FROM contact;"
+    exQuery = "SELECT contact.firstName, contact.lastName FROM contact"
     assert query == exQuery
 
 def TestInnerJoin():
     q = Query("contact")
-    q.Join("account", JoinOperators.Inner, "contactid", "contactid")
+    q.Join("account", JoinOperators.INNER, "contactid", "contactid")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact INNER JOIN account ON contact.contactid = contactid;"
+    exQuery = "SELECT * FROM contact INNER JOIN account ON contact.contactid = contactid"
     assert query == exQuery
 
 def TestInnerJoinWithAlias():
     q2 = Query("contact")
-    q2.Join("account", JoinOperators.Inner, "contactid", "contactid", "acc")
+    q2.Join("account", JoinOperators.INNER, "contactid", "contactid", "acc")
     query = q2.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact INNER JOIN account AS acc ON contact.contactid = acc.contactid;"
+    exQuery = "SELECT * FROM contact INNER JOIN account AS acc ON contact.contactid = acc.contactid"
     assert query == exQuery
 
 def TestAddCondition():
@@ -46,7 +46,7 @@ def TestAddCondition():
     q.addSingleCondition("age", ConditionalOperators.GreaterThan, 50)
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact WHERE age > 50;"
+    exQuery = "SELECT * FROM contact WHERE age > 50"
     assert query == exQuery
 
 def TestAddConditionWithTableName():
@@ -54,7 +54,7 @@ def TestAddConditionWithTableName():
     q.addSingleCondition("age", ConditionalOperators.GreaterThan, 50, "contact")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact WHERE contact.age > 50;"
+    exQuery = "SELECT * FROM contact WHERE contact.age > 50"
     assert query == exQuery
 
 def TestGroupBySingle():
@@ -64,7 +64,7 @@ def TestGroupBySingle():
     q.GroupBy("lastName")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT lastName, COUNT(id) FROM contact GROUP BY lastName;"
+    exQuery = "SELECT lastName, COUNT(id) FROM contact GROUP BY lastName"
     assert query == exQuery
 
 def TestGroupByMultiple():
@@ -76,7 +76,7 @@ def TestGroupByMultiple():
     q.GroupBy("firstName")
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT lastName, firstName, COUNT(id) FROM contact GROUP BY lastName, firstName;"
+    exQuery = "SELECT lastName, firstName, COUNT(id) FROM contact GROUP BY lastName, firstName"
     assert query == exQuery
 
 def TestOrderBySingleDesc():
@@ -84,7 +84,7 @@ def TestOrderBySingleDesc():
     q.OrderBy("lastName", Orders.Descending)
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact ORDER BY lastName DESC;"
+    exQuery = "SELECT * FROM contact ORDER BY lastName DESC"
     assert query == exQuery
 
 def TestOrderByMultipleDescAndAsc():
@@ -93,7 +93,7 @@ def TestOrderByMultipleDescAndAsc():
     q.OrderBy("firstName", Orders.Ascending)
     query = q.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact ORDER BY lastName DESC, firstName ASC;"
+    exQuery = "SELECT * FROM contact ORDER BY lastName DESC, firstName ASC"
     assert query == exQuery
 
 def TestConditionSetAND():
@@ -149,7 +149,7 @@ def TestConditionSetMany():
     q.addConditionSet(outer)
     query = q.getQuery()
     print(query)
-    assert query == "SELECT * FROM contact WHERE county = Hennepin OR (name IS NOT NULL OR contact.emailAddress != Leo@Gmail.com OR (age < 0 AND length > 3) OR (contact.height < 0 AND weight > 3));"
+    assert query == "SELECT * FROM contact WHERE county = Hennepin OR (name IS NOT NULL OR contact.emailAddress != Leo@Gmail.com OR (age < 0 AND length > 3) OR (contact.height < 0 AND weight > 3))"
 
 
 def main():

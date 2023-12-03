@@ -105,8 +105,8 @@ class Query:
         self.conditionSets = []
         self.values = []
 
-    def Select(self, attribute: str, tableName: str = None):
-        self.attributes.append({"attribute": attribute, "table": tableName})
+    def Select(self, attribute: str, tableName: str = None, alias: str = None):
+        self.attributes.append({"attribute": attribute, "table": tableName, "alias": alias})
 
     # Operator here refers to a logical operator
     def addSingleCondition(self, attribute: str, operator: LogicalOperators, value: object, tableName: str = None):
@@ -142,11 +142,15 @@ class Query:
             attrCount = len(self.attributes)
             for attribute in self.attributes:
                 attrCount = attrCount - 1
-                if attribute["table"] is not None:
-                    query += attribute["table"] + "." + attribute["attribute"] 
+                if attribute["table"] is not None and attribute["alias"] is not None:
+                    query += attribute["table"] + "." + attribute["attribute"] + " AS " + attribute["alias"]
+                elif attribute["table"] is not None:
+                    query += attribute["table"] + "." + attribute["attribute"]
+                elif attribute["alias"] is not None:
+                    query += attribute["attribute"] + " AS " + attribute["alias"]
                 else:
                     query += attribute["attribute"] 
-                
+
                 if attrCount > 0: query += ", "
         
         query += " FROM " + self.sourceTableName

@@ -9,6 +9,8 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+primarykeys = {"skaterstats": "playerid", "team": "teamid", "game": "gameid", "player": "player_id"}
+
 def getConnection():
     try:
         username = os.environ.get("zOracleDb_user")
@@ -31,7 +33,8 @@ def respond(col_names, rows):
 def getQueryFromArgs(args: dict):
     q = Query(args['table'])
     vals = []
-
+    q.Select(primarykeys[args['table'].lower()], args['table'], "id")
+    q.Select("*", args['table'])
     if 'order' in args.keys():
         for orders in args['order'].split('|'):
             order = orders.split(',')
