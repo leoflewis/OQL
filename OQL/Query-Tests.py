@@ -151,6 +151,13 @@ def TestConditionSetMany():
     print(query)
     assert query == "SELECT * FROM contact WHERE county = Hennepin OR (name IS NOT NULL OR contact.emailAddress != Leo@Gmail.com OR (age < 0 AND length > 3) OR (contact.height < 0 AND weight > 3))"
 
+def TestInjection():
+    q = Query(";drop tables;")
+    q.OrderBy("lastName", Orders.Descending)
+    q.OrderBy("firstName", Orders.Ascending)
+    query = q.getQuery()
+    print(query)
+
 
 def main():
     TestNewSelectAll()
@@ -169,5 +176,6 @@ def main():
     TestConditionSetSingle()
     TestConditionSimple()
     TestConditionSetMany()
+    TestInjection()
 
 main()

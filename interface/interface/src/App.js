@@ -68,7 +68,7 @@ const SampleTable = () => {
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown >
-        <Dropdown.Toggle variant="success" id="dropdown-basic">Limit</Dropdown.Toggle>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">Join</Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item eventKey="SkaterStats">SkaterStats</Dropdown.Item>
           <Dropdown.Item eventKey="GoalieStats">GoalieStats</Dropdown.Item>

@@ -194,5 +194,7 @@ class Query:
                 query += order
                 if ordCount > 0: query += ", "
 
+        if 'drop' in query.lower():
+            return None
 
         return query
