@@ -2,9 +2,6 @@ CREATE OR REPLACE VIEW SkaterStats AS
 SELECT
     GP.Player as PlayerId,
     GP.fullname AS Name,
-    GP.DraftYear, 
-    GP.DraftRound, 
-    GP.DraftPosition,
     NVL(GP.GamesPlayed, 0) as GP,
     NVL(G.Goals, 0) as Goals,
     NVL(PA.PrimaryAssists, 0) as PAssists,
