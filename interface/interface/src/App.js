@@ -67,6 +67,17 @@ const SampleTable = () => {
           <Dropdown.Item eventKey="Team">Teams</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+      <Dropdown >
+        <Dropdown.Toggle variant="success" id="dropdown-basic">Limit</Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item eventKey="SkaterStats">SkaterStats</Dropdown.Item>
+          <Dropdown.Item eventKey="GoalieStats">GoalieStats</Dropdown.Item>
+          <Dropdown.Item eventKey="TeamStats">TeamStats</Dropdown.Item>
+          <Dropdown.Item eventKey="Game">Games</Dropdown.Item>
+          <Dropdown.Item eventKey="Draft">Drafts</Dropdown.Item>
+          <Dropdown.Item eventKey="Team">Teams</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
       <Button variant="dark" onClick={handleSearch}>
         Search
       </Button>
