@@ -246,15 +246,15 @@ def iteratePlays(cursor, plays, gameid):
                 vals = [playid, gameid, season, period, timeLeft, event, shooter, goalie, x, y, playTeamId, reason]
                 insertEventWithString(cursor, sql, vals)
             elif event =='goal':
-                if assist1 is not None:
-                    #print("\t" + str(event) + " at " + str(timeLeft) + " in " + str(period) + " id: " + str(playid) + " team: " + str(playTeamId) + " scorer: " + str(scorer) + " assister: " + str(assist1) + " goalie: " + str(goalie) + " x: " + str(x) + " y: " + str(y) + " type: " + str(shotype))
-                    sql = "INSERT INTO GameEvent(playid, game_gameid, game_seasonid, eventperiod, timeremaining, name, player_1, goalie, xcoord, ycoord, team_teamid, player_2) VALUES(:playid, :gameid, :season, :period, :timeremaining, :event, :scorer, :goalie, :x, :y, :playTeamId, :assist1)"
-                    vals = [playid, gameid, season, period, timeLeft, event, scorer, goalie, x, y, playTeamId, assist1]
-                    insertEventWithString(cursor, sql, vals)
-                elif assist2 is not None:
+                if assist2 is not None:
                     #print("\t" + str(event) + " at " + str(timeLeft) + " in " + str(period) + " id: " + str(playid) + " team: " + str(playTeamId) + " scorer: " + str(scorer) + " assister1: " + str(assist1) + " assister2: " + str(assist2) + " goalie: " + str(goalie) + " x: " + str(x) + " y: " + str(y) + " type: " + str(shotype))
                     sql = "INSERT INTO GameEvent(playid, game_gameid, game_seasonid, eventperiod, timeremaining, name, player_1, goalie, xcoord, ycoord, team_teamid, player_2, player_3) VALUES(:playid, :gameid, :season, :period, :timeremaining, :event, :scorer, :goalie, :x, :y, :playTeamId, :assist1, :assist2)"
                     vals = [playid, gameid, season, period, timeLeft, event,  scorer, goalie, x, y, playTeamId, assist1, assist2]
+                    insertEventWithString(cursor, sql, vals)
+                elif assist1 is not None:
+                    #print("\t" + str(event) + " at " + str(timeLeft) + " in " + str(period) + " id: " + str(playid) + " team: " + str(playTeamId) + " scorer: " + str(scorer) + " assister: " + str(assist1) + " goalie: " + str(goalie) + " x: " + str(x) + " y: " + str(y) + " type: " + str(shotype))
+                    sql = "INSERT INTO GameEvent(playid, game_gameid, game_seasonid, eventperiod, timeremaining, name, player_1, goalie, xcoord, ycoord, team_teamid, player_2) VALUES(:playid, :gameid, :season, :period, :timeremaining, :event, :scorer, :goalie, :x, :y, :playTeamId, :assist1)"
+                    vals = [playid, gameid, season, period, timeLeft, event, scorer, goalie, x, y, playTeamId, assist1]
                     insertEventWithString(cursor, sql, vals)
                 else:
                     #print("\t" + str(event) + " at " + str(timeLeft) + " in " + str(period) + " id: " + str(playid) + " team: " + str(playTeamId) + " scorer: " + str(scorer) + " goalie: " + str(goalie) + " x: " + str(x) + " y: " + str(y) + " type: " + str(shotype))

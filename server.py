@@ -1,11 +1,13 @@
 from flask import Flask, jsonify, request
 import cx_Oracle, os
-
+from flask_cors import CORS, cross_origin
 from OQL.Query import *
 
 cx_Oracle.init_oracle_client(lib_dir="C:\Program Files\instantclient_21_12")
  
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def getConnection():
     try:
@@ -21,7 +23,7 @@ def getConnection():
         return None
 
 def respond(col_names, rows):
-    json_data = []
+    json_data = [col_names]
     for row in rows:
         json_data.append(dict(zip(col_names,row)))
     return jsonify(json_data)
@@ -53,7 +55,7 @@ def getQueryFromArgs(args: dict):
     print(q.getQuery())
     return q.getQuery(), vals
     
-
+@cross_origin()
 @app.route('/')
 def selectPlayer():
     try:
