@@ -52,13 +52,16 @@ class ConditionSet:
         self.operator = operator
         self.conditions = []
         self.conditionSets = []
+        self.values = []
 
     # Operator here referse to a logical operator
     def addCondition(self, attribute: str, operator: ConditionalOperators, value: object = None, tableName: str = None):
         if tableName is not None:
             self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value), "tableName": tableName})
+            self.values.append(value)
         elif value is not None:
             self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value)})
+            self.values.append(value)
         else:
             self.conditions.append({"attribute": attribute, "operator": operator})
 
@@ -68,6 +71,9 @@ class ConditionSet:
     def getOperator(self):
         return self.operator
 
+    def getValues(self):
+        return self.values
+    
     def getCondition(self):
         condtionSTR = "("
         condCount = len(self.conditions)
@@ -114,6 +120,7 @@ class Query:
             self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value), "tableName": tableName})
         else:
             self.conditions.append({"attribute": attribute, "operator": operator, "value": str(value)})
+        self.values.append(value)
 
     def addConditionSet(self, conditionSet: ConditionSet):
         self.conditionSets.append(conditionSet)
@@ -130,8 +137,14 @@ class Query:
         else:
             self.groups.append(attribute)
 
-    def OrderBy(self, attribute: str, direction: str):
-        self.orders.append(attribute + " " + direction)
+    def OrderBy(self, attribute: str, direction: str, table: str = None):
+        if table is not None:
+            self.orders.append(table + "." + attribute + " " + direction)
+        else:
+            self.orders.append(attribute + " " + direction)
+
+    def getValues(self):
+        return self.values.append(self.conditionSets.getValues())
 
     def getQuery(self):
         query = "SELECT "
@@ -194,7 +207,7 @@ class Query:
                 query += order
                 if ordCount > 0: query += ", "
 
-        if 'drop' in query.lower():
+        if 'drop ' in query.lower():
             return None
 
         return query

@@ -156,7 +156,7 @@ def TestInjection():
     q.OrderBy("lastName", Orders.Descending)
     q.OrderBy("firstName", Orders.Ascending)
     query = q.getQuery()
-    print(query)
+    assert query == None
 
 
 def main():

@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {View} from 'react-native';
+import Select from 'react-select';
 
 const SampleTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -11,6 +13,15 @@ const SampleTable = () => {
   const handleDropdownSelect = (value) => {
     setSelectedValue(value);
   };
+
+  const options = [
+    { value: 'SkaterStats', label: 'SkaterStats' },
+    { value: 'GoalieStats', label: 'GoalieStats' },
+    { value: 'TeamStats', label: 'TeamStats' },
+    { value: 'player', label: 'Player' },
+    { value: 'team', label: 'Teams' },
+    { value: 'draft', label: 'Draft' }
+  ]
 
   const handleSearch = async () => {
     // Perform the search or any other action based on the selectedValue
@@ -56,9 +67,11 @@ const SampleTable = () => {
 
   return (
     <div>
+      <div>
+      <View style={{ flexDirection:"row"}}>
       <Dropdown onSelect={handleDropdownSelect}>
         <Dropdown.Toggle variant="success" id="dropdown-basic">Table</Dropdown.Toggle>
-        <Dropdown.Menu>
+        <Dropdown.Menu class = "submenu">
           <Dropdown.Item eventKey="SkaterStats">SkaterStats</Dropdown.Item>
           <Dropdown.Item eventKey="GoalieStats">GoalieStats</Dropdown.Item>
           <Dropdown.Item eventKey="TeamStats">TeamStats</Dropdown.Item>
@@ -67,28 +80,36 @@ const SampleTable = () => {
           <Dropdown.Item eventKey="Team">Teams</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <Dropdown >
-        <Dropdown.Toggle variant="success" id="dropdown-basic">Join</Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item eventKey="SkaterStats">SkaterStats</Dropdown.Item>
-          <Dropdown.Item eventKey="GoalieStats">GoalieStats</Dropdown.Item>
-          <Dropdown.Item eventKey="TeamStats">TeamStats</Dropdown.Item>
-          <Dropdown.Item eventKey="Game">Games</Dropdown.Item>
-          <Dropdown.Item eventKey="Draft">Drafts</Dropdown.Item>
-          <Dropdown.Item eventKey="Team">Teams</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+      <Select placeholder="Join" isMulti name="colors" options={options} className="basic-multi-select" classNamePrefix="select"/> 
       <Button variant="dark" onClick={handleSearch}>
         Search
       </Button>
-
-    <div style={{ height: '100%', width: '100%' }}>
-      <DataGrid
-        rows={tableData.slice(1)}
-        columns={columns}
-        getRowId={(row) => row.ID}
-      />
-    </div>
+      </View>
+      </div>
+      <br>
+      </br>
+      <br>
+      </br>
+      <br>
+      </br>
+      <br>
+      </br>
+      <h1>Search Hockey Stats</h1>
+      <br>
+      </br>
+      <br>
+      </br>
+      <br>
+      </br>
+      <div>
+        <div style={{ height: '80%', width: '100%' }}>
+          <DataGrid
+            rows={tableData.slice(1)}
+            columns={columns}
+            getRowId={(row) => row.ID}
+          />
+        </div>
+      </div>
     </div>
   );
 };
