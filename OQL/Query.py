@@ -127,7 +127,7 @@ class Query:
 
     def Join(self, targetTableName: str, operator: JoinOperators, sourceProperty: str, targetProperty: str, targetAlias: str = None):
         if targetAlias is not None:
-            self.joinedTables.append(operator + " " + targetTableName + " AS " + targetAlias + " ON " + self.sourceTableName + "." + sourceProperty + " = " + targetAlias + "." + targetProperty)
+            self.joinedTables.append(operator + " " + targetTableName + " ON " + self.sourceTableName + "." + sourceProperty + " = " + targetAlias + "." + targetProperty)
         else:
             self.joinedTables.append(operator + " " + targetTableName + " ON " + self.sourceTableName + "." + sourceProperty + " = " + targetProperty)
 

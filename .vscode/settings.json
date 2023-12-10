@@ -1,0 +1,7 @@
+{
+    "python.testing.pytestArgs": [
+        "OQL"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

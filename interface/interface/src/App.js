@@ -9,24 +9,49 @@ import Select from 'react-select';
 const SampleTable = () => {
   const [tableData, setTableData] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
+  const [joinValue, setJoinValue] = useState('');
+  const [columnValue, setColumnValue] = useState('');
 
-  const handleDropdownSelect = (value) => {
-    setSelectedValue(value);
+  const onInputChange = (inputValue) => {
+    setSelectedValue(inputValue.value);
+    console.log(inputValue.value);
   };
+  const handleDropdownJoin = (value) => {
+    console.log(value)
+    setJoinValue(value);
+  };
+
+  const handleDropdownColumns = (value) => {
+    console.log(value)
+    setColumnValue(value);
+  };
+  const columnOptions = [
+    {value:"player_id", label: "PlayerPK"},
+    {value:"teamid", label: "TeamPK"},
+    {value:"playerid", label: "skaterstatsPK"},
+    {value:"playerid", label: "draftPK"},
+    {value:"playerid", label: "GSAAPPK"}
+  ]
 
   const options = [
     { value: 'SkaterStats', label: 'SkaterStats' },
-    { value: 'GoalieStats', label: 'GoalieStats' },
-    { value: 'TeamStats', label: 'TeamStats' },
+    { value: 'GoalScorersAboveAverageAtPosition', label: "GSAAP"},
     { value: 'player', label: 'Player' },
     { value: 'team', label: 'Teams' },
-    { value: 'draft', label: 'Draft' }
+    { value: 'draft', label: 'Draft' },
+    { value: 'game', label: 'Game' }
   ]
 
   const handleSearch = async () => {
     // Perform the search or any other action based on the selectedValue
-    const url = `http://127.0.0.1:5000/?table=${selectedValue}`;
-
+    let url = `http://127.0.0.1:5000/?table=${selectedValue}`;
+    if (joinValue.length > 0 && columnValue.length > 0){
+      url = `http://127.0.0.1:5000/?table=${selectedValue}` + `&join=${joinValue[0].value},inner` + `,${columnValue[0].value}` + `,${columnValue[0].value}`
+      console.log(url)
+    } else if (joinValue.length > 0 && columnValue.length > 1){
+      url = `http://127.0.0.1:5000/?table=${selectedValue}` + `&join=${joinValue[0].value},inner` + `,${columnValue[0].value}` + `,${columnValue[1].value}`
+      console.log(url)
+    }
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -39,7 +64,6 @@ const SampleTable = () => {
         console.log(data);
         if(data.length > 1 && Array.isArray(data[0]) && typeof data[1] === 'object') {
           setTableData(data);
-          console.log(data);
         }
       })
       .catch((error) => {
@@ -69,18 +93,9 @@ const SampleTable = () => {
     <div>
       <div>
       <View style={{ flexDirection:"row"}}>
-      <Dropdown onSelect={handleDropdownSelect}>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">Table</Dropdown.Toggle>
-        <Dropdown.Menu class = "submenu">
-          <Dropdown.Item eventKey="SkaterStats">SkaterStats</Dropdown.Item>
-          <Dropdown.Item eventKey="GoalieStats">GoalieStats</Dropdown.Item>
-          <Dropdown.Item eventKey="TeamStats">TeamStats</Dropdown.Item>
-          <Dropdown.Item eventKey="Game">Games</Dropdown.Item>
-          <Dropdown.Item eventKey="Draft">Drafts</Dropdown.Item>
-          <Dropdown.Item eventKey="Team">Teams</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      <Select placeholder="Join" isMulti name="colors" options={options} className="basic-multi-select" classNamePrefix="select"/> 
+      <Select onChange={onInputChange} placeholder="Table" options={options} className="basic-multi-select" classNamePrefix="select"/> 
+      <Select onChange={handleDropdownJoin} placeholder="Join" isMulti options={options} className="basic-multi-select" classNamePrefix="join"/>
+      <Select onChange={handleDropdownColumns} placeholder="Columns" isMulti options={columnOptions} className="basic-multi-select" classNamePrefix="attributes"/> 
       <Button variant="dark" onClick={handleSearch}>
         Search
       </Button>
@@ -95,6 +110,10 @@ const SampleTable = () => {
       <br>
       </br>
       <h1>Search Hockey Stats</h1>
+      <br>
+      </br>
+      <br>
+      </br>
       <br>
       </br>
       <br>

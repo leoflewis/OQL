@@ -38,7 +38,7 @@ def TestInnerJoinWithAlias():
     q2.Join("account", JoinOperators.INNER, "contactid", "contactid", "acc")
     query = q2.getQuery()
     print(query)
-    exQuery = "SELECT * FROM contact INNER JOIN account AS acc ON contact.contactid = acc.contactid"
+    exQuery = "SELECT * FROM contact INNER JOIN account ON contact.contactid = acc.contactid"
     assert query == exQuery
 
 def TestAddCondition():

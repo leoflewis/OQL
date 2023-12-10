@@ -9,7 +9,10 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-primarykeys = {"skaterstats": "playerid", "team": "teamid", "game": "gameid", "player": "player_id"}
+primarykeys = {"skaterstats": "playerid", "team": "teamid", 
+               "game": "gameid", "player": "player_id", 
+               "goalscorersaboveaverageatposition": "playerid",
+               "draft": "playerid"}
 
 def getConnection():
     try:
@@ -53,7 +56,8 @@ def getQueryFromArgs(args: dict):
 
     if 'join' in args.keys():
         join = args['join'].split(",")
-        q.Join(join[0], JoinOperators.INNER, join[2], join[3])
+        q.Select("*", join[0])
+        q.Join(join[0], JoinOperators.INNER, join[2], join[3], join[0])
 
     print(q.getQuery())
     return q.getQuery(), vals
